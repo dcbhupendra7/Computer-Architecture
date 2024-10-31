@@ -41,6 +41,15 @@ class CacheSimulator:
         return CacheSimulator(capacity, block_size, associativity)
 
     @staticmethod
+    def validate_params(capacity, block_size, associativity):
+        if not CacheSimulator.is_valid_capacity(capacity):
+            raise ValueError(f"Invalid capacity value: {capacity}")
+        if not CacheSimulator.is_valid_block_size(block_size):
+            raise ValueError(f"Invalid block size value: {block_size}")
+        if not CacheSimulator.is_valid_associativity(associativity):
+            raise ValueError(f"Invalid associativity value: {associativity}")
+
+    @staticmethod
     def is_valid_capacity(capacity):
         return capacity in [4, 8, 16, 32, 64]
 
@@ -69,3 +78,7 @@ if __name__ == "__main__":
     except ValueError as e:
         print(f"Error: {e}")
         CacheSimulator.print_usage()
+
+
+
+
