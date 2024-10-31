@@ -72,5 +72,4 @@ This command will set:
 ## Flowchart Representation
 The flowchart for the cache simulator includes steps to parse input, initialize memory, identify operations, process load/store requests, apply LRU policy, and collect statistics.
 
-## License
-This project is licensed under the MIT License.
+
