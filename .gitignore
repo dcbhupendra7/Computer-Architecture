@@ -1,0 +1,11 @@
+# Byte-compiled
+__pycache__/
+*.py[cod]
+
+
+# Logs
+*.log
+
+# Cache simulator specific
+memory_trace.txt
+*.trace

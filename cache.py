@@ -21,6 +21,51 @@ class CacheSimulator:
         main_memory = [i for i in range(memory_size)]
         return main_memory
 
+    def read_memory_trace(self, trace_file_path):
+        # Read memory trace from a file
+        try:
+            with open(trace_file_path, 'r') as trace_file:
+                traces = trace_file.readlines()
+                self.process_traces(traces)
+        except FileNotFoundError:
+            print(f"Error: The file '{trace_file_path}' was not found.")
+
+    def process_traces(self, traces):
+        # Process each line in the memory trace
+        for trace in traces:
+            trace = trace.strip()
+            if not trace:
+                continue
+
+            # Expected trace format: "LOAD 0x0001" or "STORE 0x0001 0xAB"
+            parts = trace.split()
+            if len(parts) < 2:
+                print(f"Invalid trace format: {trace}")
+                continue
+
+            operation = parts[0].upper()
+            address = int(parts[1], 16)
+
+            if operation == "LOAD":
+                self.load_operation(address)
+            elif operation == "STORE":
+                if len(parts) != 3:
+                    print(f"Invalid STORE trace format: {trace}")
+                    continue
+                data = int(parts[2], 16)
+                self.store_operation(address, data)
+            else:
+                print(f"Unknown operation type: {operation}")
+
+    def load_operation(self, address):
+        # Handle LOAD operation (stub for now)
+        print(f"Handling LOAD operation for address: {hex(address)}")
+
+    def store_operation(self, address, data):
+        # Handle STORE operation (stub for now)
+        print(f"Handling STORE operation for address: {hex(address)}, data: {hex(data)}")
+
+
     @staticmethod
     def validate_params(capacity, block_size, associativity):
         if not CacheSimulator.is_valid_capacity(capacity):
