@@ -65,6 +65,9 @@ class CacheSimulator:
             else:
                 print(f"Unknown operation type: {operation}")
 
+        # After processing all traces, write back dirty blocks
+        self.write_back_dirty_blocks()
+
     def load_operation(self, address):
         # Extract set index and tag from address
         index, tag = self.extract_index_and_tag(address)
@@ -149,6 +152,16 @@ class CacheSimulator:
             self.lru_counter = 0
         self.lru_counter += 1
         return self.lru_counter
+
+    def write_back_dirty_blocks(self):
+        # Write back all dirty blocks from the cache to the main memory
+        print("\nWriting back dirty blocks to main memory...")
+        for index, cache_set in enumerate(self.cache):
+            for line in cache_set:
+                if line['valid'] and line['dirty']:
+                    # Write back dirty data to memory
+                    self.stats['dirty_writebacks'] += 1
+                    print(f"Writing back dirty block with tag {line['tag']} from set {index}")
 
     def print_statistics(self):
         # Print collected statistics
