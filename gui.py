@@ -31,9 +31,6 @@ class CacheSimulatorGUI:
         # Memory Trace File Selection Section
         self.create_neumorphic_section("Select Memory Trace File", self.create_trace_file_selector, 0.4)
 
-        # Start and Reset Buttons
-        self.create_buttons()
-
         # Statistics Output Section
         self.create_neumorphic_section("Simulation Results", self.create_output_section, 0.7)
 
@@ -71,26 +68,20 @@ class CacheSimulatorGUI:
             self.apply_theme_to_widget(child)
 
     def create_trace_file_selector(self, parent):
-        trace_entry = tk.Entry(parent, textvariable=self.trace_file_path, width=40, relief="solid", bd=2, highlightthickness=1)
-        trace_entry.grid(row=1, column=0, pady=5)
-        browse_button = tk.Button(parent, text="Browse", command=self.select_trace_file, padx=10, pady=5)
-        browse_button.grid(row=1, column=1, padx=5, pady=5)
+        browse_button = tk.Button(parent, text="Select Memory Trace File", command=self.select_trace_file, font=("Helvetica", 12, "bold"), padx=20, pady=10, bg="#008000", fg="#ffffff")
+        browse_button.grid(row=1, column=0, padx=5, pady=5)
 
-        # Apply theme to all widgets in this section
-        self.apply_theme_to_widget(trace_entry)
-        self.apply_theme_to_widget(browse_button)
-
-    def create_buttons(self):
-        button_frame = tk.Frame(self.root)
-        button_frame.place(relx=0.5, rely=0.55, anchor='n')
-
-        start_button = tk.Button(button_frame, text="Start Simulation", command=self.start_simulation, font=("Helvetica", 12, "bold"), padx=20, pady=10, bg="#008000", fg="#ffffff")
-        start_button.grid(row=0, column=0, padx=10)
+        # Start and Reset Buttons next to Browse button
+        start_button = tk.Button(parent, text="Start Simulation", command=self.start_simulation, font=("Helvetica", 12, "bold"), padx=20, pady=10, bg="#008000", fg="#ffffff")
+        start_button.grid(row=1, column=1, padx=5, pady=5)
         self.apply_theme_to_widget(start_button)
 
-        reset_button = tk.Button(button_frame, text="Reset", command=self.reset_fields, font=("Helvetica", 12, "bold"), padx=20, pady=10)
-        reset_button.grid(row=0, column=1, padx=10)
+        reset_button = tk.Button(parent, text="Reset", command=self.reset_fields, font=("Helvetica", 12, "bold"), padx=20, pady=10)
+        reset_button.grid(row=1, column=2, padx=5, pady=5)
         self.apply_theme_to_widget(reset_button)
+
+        # Apply theme to all widgets in this section
+        self.apply_theme_to_widget(browse_button)
 
     def create_output_section(self, parent):
         # Output text box for displaying statistics
