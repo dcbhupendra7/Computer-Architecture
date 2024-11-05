@@ -4,8 +4,11 @@ from cache import CacheSimulator
 
 if __name__ == "__main__":
     try:
+        # Parse command-line arguments
         capacity, block_size, associativity = parse_params(sys.argv[1:])
         CacheSimulator.validate_params(capacity, block_size, associativity)
+
+        # Initialize the simulator
         simulator = CacheSimulator(capacity, block_size, associativity)
         print("Parsed Parameters:")
         print(f"Capacity: {simulator.capacity} KB")
@@ -18,5 +21,9 @@ if __name__ == "__main__":
 
         # Print the cache statistics after running the trace
         simulator.print_statistics()
+
+        # Finalization message
+        print("\nThank you for using the Cache Simulator!")
+
     except ValueError as e:
         print(f"Error: {e}")

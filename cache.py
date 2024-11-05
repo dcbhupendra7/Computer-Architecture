@@ -155,6 +155,8 @@ class CacheSimulator:
         print("\nCache Statistics:")
         for key, value in self.stats.items():
             print(f"{key}: {value}")
+        print(
+            "\nCache simulation complete. All dirty blocks have been written back to main memory, and the simulation has ended successfully.")
 
     @staticmethod
     def validate_params(capacity, block_size, associativity):
