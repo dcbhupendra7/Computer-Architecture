@@ -29,7 +29,7 @@ class CacheSimulatorGUI:
         self.create_neumorphic_section("Cache Configuration", self.create_configuration_section, 0.1)
 
         # Memory Trace File Selection Section
-        self.create_neumorphic_section("Select Memory Trace File", self.create_trace_file_selector, 0.4)
+        self.create_neumorphic_section("", self.create_trace_file_selector, 0.4)
 
         # Statistics Output Section
         self.create_neumorphic_section("Simulation Results", self.create_output_section, 0.7)
