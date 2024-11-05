@@ -1,4 +1,3 @@
-
 class CacheSimulator:
     def __init__(self, capacity, block_size, associativity):
         self.capacity = capacity
@@ -12,7 +11,7 @@ class CacheSimulator:
         # Initialize cache as a list of sets, where each set contains a list of cache lines
         cache = []
         for _ in range(self.num_sets):
-            set_lines = [{'valid': False, 'tag': None, 'data': [0] * self.block_size, 'dirty': False} for _ in range(self.associativity)]
+            set_lines = [{'valid': False, 'tag': None, 'data': [0] * self.block_size, 'dirty': False, 'lru_counter': 0} for _ in range(self.associativity)]
             cache.append(set_lines)
         return cache
 
@@ -68,6 +67,7 @@ class CacheSimulator:
             if line['valid'] and line['tag'] == tag:
                 # Cache hit
                 print(f"Cache HIT for LOAD at address: {hex(address)}")
+                line['lru_counter'] = self.get_new_lru_counter()
                 return line['data']
 
         # Cache miss
@@ -87,6 +87,7 @@ class CacheSimulator:
                 print(f"Cache HIT for STORE at address: {hex(address)}")
                 line['data'] = [data]  # Assuming the block size is 1 for simplicity
                 line['dirty'] = True
+                line['lru_counter'] = self.get_new_lru_counter()
                 return
 
         # Cache miss
@@ -105,16 +106,18 @@ class CacheSimulator:
             empty_line['valid'] = True
             empty_line['tag'] = tag
             empty_line['data'] = [address]  # Load data from memory (dummy example)
+            empty_line['lru_counter'] = self.get_new_lru_counter()
             print(f"Loaded memory address {hex(address)} into cache set {index}")
         else:
-            # Apply LRU replacement (placeholder logic)
-            evicted_line = cache_set[0]  # Replace the first line (to be enhanced)
+            # Apply LRU replacement
+            evicted_line = min(cache_set, key=lambda line: line['lru_counter'])
             if evicted_line['dirty']:
                 # Write back to memory if the line is dirty
                 print(f"Writing back dirty block with tag {evicted_line['tag']} from set {index}")
             evicted_line['valid'] = True
             evicted_line['tag'] = tag
             evicted_line['data'] = [address]  # Load data from memory (dummy example)
+            evicted_line['lru_counter'] = self.get_new_lru_counter()
             print(f"Replaced line in cache set {index} with memory address {hex(address)}")
 
     def extract_index_and_tag(self, address):
@@ -122,6 +125,13 @@ class CacheSimulator:
         index = (address // self.block_size) % self.num_sets
         tag = address // (self.block_size * self.num_sets)
         return index, tag
+
+    def get_new_lru_counter(self):
+        # Returns an incremented LRU counter value to keep track of usage
+        if not hasattr(self, 'lru_counter'):
+            self.lru_counter = 0
+        self.lru_counter += 1
+        return self.lru_counter
 
     @staticmethod
     def validate_params(capacity, block_size, associativity):
