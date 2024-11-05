@@ -1,6 +1,6 @@
 # Cache Simulator
 
-This is a Level 1 Data Cache Simulator implemented in Python. The simulator parses command-line arguments to configure cache capacity, block size, and associativity, and simulates memory accesses to collect performance statistics.
+This is a Level 1 Data Cache Simulator implemented in Python. The simulator can now be used with a graphical user interface (GUI) or through command-line arguments to configure cache capacity, block size, and associativity, and simulates memory accesses to collect performance statistics.
 
 ## Flowchart Overview
 The flowchart of the simulator follows these steps:
@@ -35,8 +35,11 @@ The flowchart of the simulator follows these steps:
 
 ## Requirements
 - Python 3.x
+- `tkinter` library for GUI
 
 ## How to Run
+
+### Command-Line Interface (CLI)
 
 1. Save the Python script (`cache_simulator.py`) in your desired directory.
 2. Open a terminal and navigate to the directory:
@@ -55,7 +58,23 @@ The flowchart of the simulator follows these steps:
    - `-b<blocksize>`: Block size in bytes (valid values: 4, 8, 16, 32, 64, 128, 256, 512).
    - `-a<associativity>`: Cache associativity (valid values: 1, 2, 4, 8, 16).
 
-## Usage Example
+### Graphical User Interface (GUI)
+
+1. Save the GUI script (`gui.py`) in your project directory.
+2. Open a terminal and navigate to the directory:
+   ```bash
+   cd path/to/directory
+   ```
+3. Run the GUI with the following command:
+   ```bash
+   python gui.py
+   ```
+4. In the GUI, you can:
+   - Enter Cache Capacity, Block Size, and Associativity values.
+   - Select a memory trace file.
+   - Click **Start Simulation** to run the cache simulator and view results in the output section.
+
+## Usage Example (CLI)
 
 ```bash
 python cache_simulator.py -c8 -b16 -a4
@@ -66,10 +85,9 @@ This command will set:
 - Associativity: 4
 
 ## Output
-- If the parameters are valid, the script will print the parsed values.
+- If the parameters are valid, the script will print the parsed values and simulate memory operations.
 - If the parameters are invalid or missing, it will print an error message and the usage information.
+- The GUI version will show the statistics after completing the simulation.
 
 ## Flowchart Representation
 The flowchart for the cache simulator includes steps to parse input, initialize memory, identify operations, process load/store requests, apply LRU policy, and collect statistics.
-
-
