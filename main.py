@@ -15,5 +15,8 @@ if __name__ == "__main__":
         # Run the memory trace processing (example trace file path: "memory_trace.txt")
         trace_file_path = "memory_trace.txt"
         simulator.read_memory_trace(trace_file_path)
+
+        # Print the cache statistics after running the trace
+        simulator.print_statistics()
     except ValueError as e:
         print(f"Error: {e}")

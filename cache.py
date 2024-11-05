@@ -6,6 +6,14 @@ class CacheSimulator:
         self.num_sets = (capacity * 1024) // (block_size * associativity)
         self.cache = self.initialize_cache()
         self.main_memory = self.initialize_main_memory()
+        # Initialize statistics
+        self.stats = {
+            'cache_hits': 0,
+            'cache_misses': 0,
+            'data_reads': 0,
+            'data_writes': 0,
+            'dirty_writebacks': 0
+        }
 
     def initialize_cache(self):
         # Initialize cache as a list of sets, where each set contains a list of cache lines
@@ -68,10 +76,14 @@ class CacheSimulator:
                 # Cache hit
                 print(f"Cache HIT for LOAD at address: {hex(address)}")
                 line['lru_counter'] = self.get_new_lru_counter()
+                self.stats['cache_hits'] += 1
+                self.stats['data_reads'] += 1
                 return line['data']
 
         # Cache miss
         print(f"Cache MISS for LOAD at address: {hex(address)}")
+        self.stats['cache_misses'] += 1
+        self.stats['data_reads'] += 1
         # Handle cache miss: read from memory and load into cache
         self.handle_cache_miss(index, tag, address)
 
@@ -88,10 +100,14 @@ class CacheSimulator:
                 line['data'] = [data]  # Assuming the block size is 1 for simplicity
                 line['dirty'] = True
                 line['lru_counter'] = self.get_new_lru_counter()
+                self.stats['cache_hits'] += 1
+                self.stats['data_writes'] += 1
                 return
 
         # Cache miss
         print(f"Cache MISS for STORE at address: {hex(address)}")
+        self.stats['cache_misses'] += 1
+        self.stats['data_writes'] += 1
         # Handle cache miss: load the cache line from memory and update it
         self.handle_cache_miss(index, tag, address)
         self.store_operation(address, data)  # Retry store after bringing into cache
@@ -114,6 +130,7 @@ class CacheSimulator:
             if evicted_line['dirty']:
                 # Write back to memory if the line is dirty
                 print(f"Writing back dirty block with tag {evicted_line['tag']} from set {index}")
+                self.stats['dirty_writebacks'] += 1
             evicted_line['valid'] = True
             evicted_line['tag'] = tag
             evicted_line['data'] = [address]  # Load data from memory (dummy example)
@@ -132,6 +149,12 @@ class CacheSimulator:
             self.lru_counter = 0
         self.lru_counter += 1
         return self.lru_counter
+
+    def print_statistics(self):
+        # Print collected statistics
+        print("\nCache Statistics:")
+        for key, value in self.stats.items():
+            print(f"{key}: {value}")
 
     @staticmethod
     def validate_params(capacity, block_size, associativity):
