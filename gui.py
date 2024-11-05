@@ -13,28 +13,16 @@ class CacheSimulatorGUI:
 
         # Styling Dictionary
         self.styles = {
-            "light": {
-                "bg": "#e0e0e0",
-                "fg": "#333333",
-                "button_bg": "#cccccc",
-                "button_fg": "#000000",
-                "entry_bg": "#ffffff",
-                "entry_fg": "#000000",
-                "highlight": "#bbbbbb"
-            },
-            "dark": {
-                "bg": "#2c2c2c",
-                "fg": "#e0e0e0",
-                "button_bg": "#008000",  # Green background for buttons in dark mode
-                "button_fg": "#ffffff",  # White text for buttons
-                "entry_bg": "#3c3c3c",
-                "entry_fg": "#ffffff",
-                "highlight": "#80c080"   # Lighter green for button highlight
-            }
+            "bg": "#74759a",
+            "fg": "#333333",
+            "button_bg": "#636383",
+            "button_fg": "#ffffff",
+            "entry_bg": "#ffffff",
+            "entry_fg": "#000000",
+            "highlight": "#8587b1"
         }
 
-        # Set initial theme
-        self.current_theme = "light"
+        # Apply the theme
         self.apply_theme()
 
         # Cache Configuration Section
@@ -43,14 +31,11 @@ class CacheSimulatorGUI:
         # Memory Trace File Selection Section
         self.create_neumorphic_section("Select Memory Trace File", self.create_trace_file_selector, 0.4)
 
-        # Start Simulation Button
-        self.create_start_button()
+        # Start and Reset Buttons
+        self.create_buttons()
 
         # Statistics Output Section
         self.create_neumorphic_section("Simulation Results", self.create_output_section, 0.7)
-
-        # Theme Toggle Button
-        self.create_theme_toggle()
 
     def create_neumorphic_section(self, title, create_content_function, rel_y):
         # Frame for neumorphism section
@@ -87,18 +72,25 @@ class CacheSimulatorGUI:
 
     def create_trace_file_selector(self, parent):
         trace_entry = tk.Entry(parent, textvariable=self.trace_file_path, width=40, relief="solid", bd=2, highlightthickness=1)
-        trace_entry.grid(row=1, column=0, columnspan=2, pady=5)
+        trace_entry.grid(row=1, column=0, pady=5)
         browse_button = tk.Button(parent, text="Browse", command=self.select_trace_file, padx=10, pady=5)
-        browse_button.grid(row=1, column=2, padx=5, pady=5)
+        browse_button.grid(row=1, column=1, padx=5, pady=5)
 
         # Apply theme to all widgets in this section
         self.apply_theme_to_widget(trace_entry)
         self.apply_theme_to_widget(browse_button)
 
-    def create_start_button(self):
-        start_button = tk.Button(self.root, text="Start Simulation", command=self.start_simulation, font=("Helvetica", 12, "bold"), padx=20, pady=10)
-        start_button.place(relx=0.5, rely=0.6, anchor='n')
+    def create_buttons(self):
+        button_frame = tk.Frame(self.root)
+        button_frame.place(relx=0.5, rely=0.55, anchor='n')
+
+        start_button = tk.Button(button_frame, text="Start Simulation", command=self.start_simulation, font=("Helvetica", 12, "bold"), padx=20, pady=10, bg="#008000", fg="#ffffff")
+        start_button.grid(row=0, column=0, padx=10)
         self.apply_theme_to_widget(start_button)
+
+        reset_button = tk.Button(button_frame, text="Reset", command=self.reset_fields, font=("Helvetica", 12, "bold"), padx=20, pady=10)
+        reset_button.grid(row=0, column=1, padx=10)
+        self.apply_theme_to_widget(reset_button)
 
     def create_output_section(self, parent):
         # Output text box for displaying statistics
@@ -106,32 +98,16 @@ class CacheSimulatorGUI:
         self.statistics_output.grid(row=1, column=0, columnspan=2, pady=5)
         self.apply_theme_to_widget(self.statistics_output)
 
-    def create_theme_toggle(self):
-        # Button to toggle between light and dark mode
-        self.theme_toggle_button = tk.Button(self.root, text="Switch to Dark Mode", command=self.toggle_theme, padx=10, pady=5)
-        self.theme_toggle_button.place(relx=0.9, rely=0.05, anchor='ne')
-        self.apply_theme_to_widget(self.theme_toggle_button)
-
-    def toggle_theme(self):
-        # Toggle between light and dark theme
-        if self.current_theme == "light":
-            self.current_theme = "dark"
-            self.theme_toggle_button.config(text="Switch to Light Mode")
-        else:
-            self.current_theme = "light"
-            self.theme_toggle_button.config(text="Switch to Dark Mode")
-        self.apply_theme()
-
     def apply_theme(self):
         # Apply theme settings to the entire GUI
-        theme = self.styles[self.current_theme]
+        theme = self.styles
         self.root.configure(bg=theme["bg"])
         for widget in self.root.winfo_children():
             self.apply_theme_to_widget(widget)
 
     def apply_theme_to_widget(self, widget):
         # Apply theme settings to individual widgets
-        theme = self.styles[self.current_theme]
+        theme = self.styles
         widget_type = widget.winfo_class()
 
         # Set background color for all widget types that support it
@@ -152,8 +128,8 @@ class CacheSimulatorGUI:
                 activebackground=theme["highlight"],
                 relief="solid",
                 bd=2,  # Add border width to make it more visible
-                bg=theme["button_bg"],
-                fg=theme["button_fg"]
+                bg=widget.cget("bg"),
+                fg=widget.cget("fg")
             )
 
         # Recursively apply theme to child widgets
@@ -187,6 +163,14 @@ class CacheSimulatorGUI:
 
         except ValueError as e:
             messagebox.showerror("Invalid Input", str(e))
+
+    def reset_fields(self):
+        # Reset all input fields to empty
+        self.capacity_entry.delete(0, tk.END)
+        self.block_size_entry.delete(0, tk.END)
+        self.associativity_entry.delete(0, tk.END)
+        self.trace_file_path.set("")
+        self.statistics_output.delete(1.0, tk.END)
 
     def show_statistics(self, simulator):
         # Clear the output text area
