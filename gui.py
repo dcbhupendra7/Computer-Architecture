@@ -14,13 +14,13 @@ class CacheSimulatorGUI:
 
         # Styling Dictionary
         self.styles = {
-            "bg": "#2E3440",
-            "fg": "#D8DEE9",
-            "button_bg": "#4C566A",
+            "bg": "#f0f0f0",
+            "fg": "#2E3440",
+            "button_bg": "#3A506B",
             "button_fg": "#ffffff",
-            "entry_bg": "#3B4252",
-            "entry_fg": "#ECEFF4",
-            "highlight": "#5E81AC"
+            "entry_bg": "#ffffff",
+            "entry_fg": "#000000",
+            "highlight": "#1B263B"
         }
 
         # Apply the theme
