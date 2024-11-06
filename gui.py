@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, Scrollbar
 from cache import CacheSimulator
 
 class CacheSimulatorGUI:
@@ -75,18 +75,18 @@ class CacheSimulatorGUI:
         reset_button.grid(row=1, column=2, padx=20, pady=15)
 
     def create_output_section(self, parent):
-        # Output text box for displaying statistics with scrollbar
-        output_frame = ctk.CTkFrame(parent)
+        # Output frame with a scrollable frame for the text box
+        output_frame = ctk.CTkScrollableFrame(parent, width=700, height=400)
         output_frame.grid(row=1, column=0, columnspan=3, pady=10, padx=20, sticky='nsew')
 
-        self.statistics_output = ctk.CTkTextbox(output_frame, height=400, width=650, wrap="word", font=ctk.CTkFont(size=16, family="Helvetica", weight="bold"))
-        self.statistics_output.pack(side="left", fill="both", expand=True)
+        # Adding the output text box within the scrollable frame
+        self.statistics_output = ctk.CTkTextbox(output_frame, height=400, width=650, wrap="word",
+                                                font=ctk.CTkFont(size=16, family="Helvetica", weight="bold"))
+        self.statistics_output.pack(fill="both", expand=True, padx=10, pady=10)
 
-        scrollbar = ctk.CTkScrollbar(output_frame, command=self.statistics_output.yview)
-        scrollbar.pack(side="right", fill="y")
-        self.statistics_output.configure(yscrollcommand=scrollbar.set)
-        output_frame.grid_rowconfigure(0, weight=1)
-        output_frame.grid_columnconfigure(0, weight=1)
+        # Configure scrollable frame for responsiveness
+        parent.grid_rowconfigure(1, weight=1)
+        parent.grid_columnconfigure(0, weight=1)
 
     def apply_theme(self):
         # Apply theme settings to the entire GUI
