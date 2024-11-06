@@ -65,18 +65,18 @@ class CacheSimulatorGUI:
         self.associativity_entry.grid(row=3, column=1, pady=5, padx=20)
 
     def create_trace_file_selector(self, parent):
-        browse_button = ctk.CTkButton(parent, text="Select Memory Trace File", command=self.select_trace_file, fg_color="blue", hover_color="blue", font=ctk.CTkFont(size=14), width=200)
+        browse_button = ctk.CTkButton(parent, text="Select Memory Trace File", command=self.select_trace_file, fg_color="blue", hover_color="blue", font=ctk.CTkFont(size=14,weight="bold"), width=200)
         browse_button.grid(row=1, column=0, padx=20, pady=15)
 
-        start_button = ctk.CTkButton(parent, text="Start Simulation", command=self.start_simulation, fg_color="green", hover_color="green", font=ctk.CTkFont(size=14), width=200)
+        start_button = ctk.CTkButton(parent, text="Start Simulation", command=self.start_simulation, fg_color="green", hover_color="green", font=ctk.CTkFont(size=14,weight="bold"), width=200)
         start_button.grid(row=1, column=1, padx=20, pady=15)
 
-        reset_button = ctk.CTkButton(parent, text="Reset", command=self.reset_fields, fg_color="red", hover_color="red", font=ctk.CTkFont(size=14), width=200)
+        reset_button = ctk.CTkButton(parent, text="Reset", command=self.reset_fields, fg_color="red", hover_color="red", font=ctk.CTkFont(size=14,weight="bold"), width=200)
         reset_button.grid(row=1, column=2, padx=20, pady=15)
 
     def create_output_section(self, parent):
         # Output text box for displaying statistics
-        self.statistics_output = ctk.CTkTextbox(parent, height=150, width=650, wrap="word")
+        self.statistics_output = ctk.CTkTextbox(parent, height=150, width=650, wrap="word", font=ctk.CTkFont(size=16, family="Helvetica",weight= "bold"))
         self.statistics_output.grid(row=1, column=0, columnspan=3, pady=10, padx=20)
 
     def apply_theme(self):
@@ -92,6 +92,9 @@ class CacheSimulatorGUI:
     def start_simulation(self):
         # Get cache parameters
         try:
+            if not self.capacity_entry.get() or not self.block_size_entry.get() or not self.associativity_entry.get():
+                raise ValueError("All fields are required. Please enter valid values for Cache Capacity, Block Size, and Associativity.")
+
             capacity = int(self.capacity_entry.get())
             block_size = int(self.block_size_entry.get())
             associativity = int(self.associativity_entry.get())
@@ -134,7 +137,7 @@ class CacheSimulatorGUI:
 
 # Main application entry point
 if __name__ == "__main__":
-    ctk.set_appearance_mode("System")  # Modes: "System" (default), "Dark", "Light"
+    ctk.set_appearance_mode("Light")  # Modes: "System" (default), "Dark", "Light"
     ctk.set_default_color_theme("blue")  # Themes: "blue" (default), "dark-blue", "green"
     root = ctk.CTk()
     app = CacheSimulatorGUI(root)
