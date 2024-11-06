@@ -52,15 +52,15 @@ class CacheSimulatorGUI:
         create_content_function(frame)
 
     def create_configuration_section(self, parent):
-        ctk.CTkLabel(parent, text="Cache Capacity (KB):", font=ctk.CTkFont(size=14)).grid(row=1, column=0, sticky='w', pady=5, padx=20)
+        ctk.CTkLabel(parent, text="Cache Capacity (KB): *", font=ctk.CTkFont(size=14)).grid(row=1, column=0, sticky='w', pady=5, padx=20)
         self.capacity_entry = ctk.CTkEntry(parent, width=200)
         self.capacity_entry.grid(row=1, column=1, pady=5, padx=20)
 
-        ctk.CTkLabel(parent, text="Block Size (Bytes):", font=ctk.CTkFont(size=14)).grid(row=2, column=0, sticky='w', pady=5, padx=20)
+        ctk.CTkLabel(parent, text="Block Size (Bytes): *", font=ctk.CTkFont(size=14)).grid(row=2, column=0, sticky='w', pady=5, padx=20)
         self.block_size_entry = ctk.CTkEntry(parent, width=200)
         self.block_size_entry.grid(row=2, column=1, pady=5, padx=20)
 
-        ctk.CTkLabel(parent, text="Associativity:", font=ctk.CTkFont(size=14)).grid(row=3, column=0, sticky='w', pady=5, padx=20)
+        ctk.CTkLabel(parent, text="Associativity: *", font=ctk.CTkFont(size=14)).grid(row=3, column=0, sticky='w', pady=5, padx=20)
         self.associativity_entry = ctk.CTkEntry(parent, width=200)
         self.associativity_entry.grid(row=3, column=1, pady=5, padx=20)
 
@@ -75,9 +75,18 @@ class CacheSimulatorGUI:
         reset_button.grid(row=1, column=2, padx=20, pady=15)
 
     def create_output_section(self, parent):
-        # Output text box for displaying statistics
-        self.statistics_output = ctk.CTkTextbox(parent, height=150, width=650, wrap="word", font=ctk.CTkFont(size=16, family="Helvetica",weight= "bold"))
-        self.statistics_output.grid(row=1, column=0, columnspan=3, pady=10, padx=20)
+        # Output text box for displaying statistics with scrollbar
+        output_frame = ctk.CTkFrame(parent)
+        output_frame.grid(row=1, column=0, columnspan=3, pady=10, padx=20, sticky='nsew')
+
+        self.statistics_output = ctk.CTkTextbox(output_frame, height=400, width=650, wrap="word", font=ctk.CTkFont(size=16, family="Helvetica", weight="bold"))
+        self.statistics_output.pack(side="left", fill="both", expand=True)
+
+        scrollbar = ctk.CTkScrollbar(output_frame, command=self.statistics_output.yview)
+        scrollbar.pack(side="right", fill="y")
+        self.statistics_output.configure(yscrollcommand=scrollbar.set)
+        output_frame.grid_rowconfigure(0, weight=1)
+        output_frame.grid_columnconfigure(0, weight=1)
 
     def apply_theme(self):
         # Apply theme settings to the entire GUI
@@ -92,8 +101,27 @@ class CacheSimulatorGUI:
     def start_simulation(self):
         # Get cache parameters
         try:
-            if not self.capacity_entry.get() or not self.block_size_entry.get() or not self.associativity_entry.get():
-                raise ValueError("All fields are required. Please enter valid values for Cache Capacity, Block Size, and Associativity.")
+            missing_fields = []
+            if not self.capacity_entry.get():
+                missing_fields.append("Cache Capacity")
+                self.capacity_entry.configure(border_color="#FF0000")  # Set red border for missing field
+            else:
+                self.capacity_entry.configure(border_color="#CCCCCC")  # Set default gray border color
+
+            if not self.block_size_entry.get():
+                missing_fields.append("Block Size")
+                self.block_size_entry.configure(border_color="#FF0000")  # Set red border for missing field
+            else:
+                self.block_size_entry.configure(border_color="#CCCCCC")  # Set default gray border color
+
+            if not self.associativity_entry.get():
+                missing_fields.append("Associativity")
+                self.associativity_entry.configure(border_color="#FF0000")  # Set red border for missing field
+            else:
+                self.associativity_entry.configure(border_color="#CCCCCC")  # Set default gray border color
+
+            if missing_fields:
+                raise ValueError(f"All fields are required. Please enter valid values for {', '.join(missing_fields)}.")
 
             capacity = int(self.capacity_entry.get())
             block_size = int(self.block_size_entry.get())
