@@ -72,11 +72,11 @@ class CacheSimulatorGUI:
         browse_button.grid(row=1, column=0, padx=5, pady=5)
 
         # Start and Reset Buttons next to Browse button
-        start_button = tk.Button(parent, text="Start Simulation", command=self.start_simulation, font=("Helvetica", 12, "bold"), padx=20, pady=10, bg="#008000", fg="#ffffff")
+        start_button = tk.Button(parent, text="Start Simulation", command=self.start_simulation, font=("Helvetica", 12, "bold"), padx=20, pady=10, bg="#0000ff", fg="#ffffff")
         start_button.grid(row=1, column=1, padx=5, pady=5)
         self.apply_theme_to_widget(start_button)
 
-        reset_button = tk.Button(parent, text="Reset", command=self.reset_fields, font=("Helvetica", 12, "bold"), padx=20, pady=10)
+        reset_button = tk.Button(parent, text="Reset", command=self.reset_fields, font=("Helvetica", 12, "bold"), padx=20, pady=10, bg="#ff0000", fg="#ffffff")
         reset_button.grid(row=1, column=2, padx=5, pady=5)
         self.apply_theme_to_widget(reset_button)
 
