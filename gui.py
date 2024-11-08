@@ -59,27 +59,26 @@ class CacheSimulatorGUI:
         # Call the content creation function to fill the frame with the appropriate widgets
         create_content_function(frame)
 
+    def create_labeled_entry(self, parent, label_text, row, column=0):
+        label = ctk.CTkLabel(parent, text=label_text, font=ctk.CTkFont(size=14))
+        label.grid(row=row, column=column, sticky='w', pady=5, padx=20)
+        entry = ctk.CTkEntry(parent, width=200)
+        entry.grid(row=row, column=column+1, pady=5, padx=20)
+        return entry
+
     def create_configuration_section(self, parent):
-        ctk.CTkLabel(parent, text="Cache Capacity (KB): *", font=ctk.CTkFont(size=14)).grid(row=1, column=0, sticky='w', pady=5, padx=20)
-        self.capacity_entry = ctk.CTkEntry(parent, width=200)
-        self.capacity_entry.grid(row=1, column=1, pady=5, padx=20)
-
-        ctk.CTkLabel(parent, text="Block Size (Bytes): *", font=ctk.CTkFont(size=14)).grid(row=2, column=0, sticky='w', pady=5, padx=20)
-        self.block_size_entry = ctk.CTkEntry(parent, width=200)
-        self.block_size_entry.grid(row=2, column=1, pady=5, padx=20)
-
-        ctk.CTkLabel(parent, text="Associativity: *", font=ctk.CTkFont(size=14)).grid(row=3, column=0, sticky='w', pady=5, padx=20)
-        self.associativity_entry = ctk.CTkEntry(parent, width=200)
-        self.associativity_entry.grid(row=3, column=1, pady=5, padx=20)
+        self.capacity_entry = self.create_labeled_entry(parent, "Cache Capacity (KB): *", 1)
+        self.block_size_entry = self.create_labeled_entry(parent, "Block Size (Bytes): *", 2)
+        self.associativity_entry = self.create_labeled_entry(parent, "Associativity: *", 3)
 
     def create_trace_file_selector(self, parent):
-        browse_button = ctk.CTkButton(parent, text="Select Memory Trace File", command=self.select_trace_file, fg_color="blue", hover_color="blue", font=ctk.CTkFont(size=14,weight="bold"), width=200)
+        browse_button = ctk.CTkButton(parent, text="Select Memory Trace File", command=self.select_trace_file, fg_color=self.styles["button_bg"], hover_color=self.styles["highlight"], font=ctk.CTkFont(size=14, weight="bold"), width=200)
         browse_button.grid(row=1, column=0, padx=20, pady=15)
 
-        start_button = ctk.CTkButton(parent, text="Start Simulation", command=self.start_simulation, fg_color="green", hover_color="green", font=ctk.CTkFont(size=14,weight="bold"), width=200)
+        start_button = ctk.CTkButton(parent, text="Start Simulation", command=self.start_simulation, fg_color="green", hover_color="green", font=ctk.CTkFont(size=14, weight="bold"), width=200)
         start_button.grid(row=1, column=1, padx=20, pady=15)
 
-        reset_button = ctk.CTkButton(parent, text="Reset", command=self.reset_fields, fg_color="red", hover_color="red", font=ctk.CTkFont(size=14,weight="bold"), width=200)
+        reset_button = ctk.CTkButton(parent, text="Reset", command=self.reset_fields, fg_color="red", hover_color="red", font=ctk.CTkFont(size=14, weight="bold"), width=200)
         reset_button.grid(row=1, column=2, padx=20, pady=15)
 
     def create_output_section(self, parent):
