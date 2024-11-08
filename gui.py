@@ -39,6 +39,14 @@ class CacheSimulatorGUI:
         # Statistics Output Section
         self.create_neumorphic_section("Simulation Results", self.create_output_section, 0.7)
 
+        # Set up validation
+        vcmd = (self.root.register(self.validate_numeric), '%P')
+
+        # Configuration Entries with Numeric Validation
+        self.capacity_entry.configure(validate="key", validatecommand=vcmd)
+        self.block_size_entry.configure(validate="key", validatecommand=vcmd)
+        self.associativity_entry.configure(validate="key", validatecommand=vcmd)
+
     def create_neumorphic_section(self, title, create_content_function, rel_y):
         # Frame for neumorphism section
         frame = ctk.CTkFrame(self.root, corner_radius=15, width=700, height=250)
@@ -92,6 +100,12 @@ class CacheSimulatorGUI:
         # Apply theme settings to the entire GUI
         theme = self.styles
         self.root.configure(bg=theme["bg"])
+
+    def validate_numeric(self, new_value):
+        if new_value == "" or new_value.isdigit():
+            return True
+        else:
+            return False
 
     def select_trace_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("Trace Files", "*.trace"), ("Text Files", "*.txt")])
@@ -156,8 +170,6 @@ class CacheSimulatorGUI:
         self.statistics_output.delete(1.0, ctk.END)
 
         # Write statistics to the output text area
-        self.statistics_output.insert(ctk.END, "\nCache Simulation Complete\n")
-        self.statistics_output.insert(ctk.END, "----------------------------\n")
         for key, value in simulator.stats.items():
             self.statistics_output.insert(ctk.END, f"{key}: {value}\n")
         self.statistics_output.insert(ctk.END, "----------------------------\n")
