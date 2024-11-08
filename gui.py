@@ -59,17 +59,17 @@ class CacheSimulatorGUI:
         # Call the content creation function to fill the frame with the appropriate widgets
         create_content_function(frame)
 
-    def create_labeled_entry(self, parent, label_text, row, column=0):
+    def create_labeled_entry(self, parent, label_text, row, column=0, placeholder=""):
         label = ctk.CTkLabel(parent, text=label_text, font=ctk.CTkFont(size=14))
         label.grid(row=row, column=column, sticky='w', pady=5, padx=20)
-        entry = ctk.CTkEntry(parent, width=200)
+        entry = ctk.CTkEntry(parent, width=300, placeholder_text=placeholder)
         entry.grid(row=row, column=column+1, pady=5, padx=20)
         return entry
 
     def create_configuration_section(self, parent):
-        self.capacity_entry = self.create_labeled_entry(parent, "Cache Capacity (KB): *", 1)
-        self.block_size_entry = self.create_labeled_entry(parent, "Block Size (Bytes): *", 2)
-        self.associativity_entry = self.create_labeled_entry(parent, "Associativity: *", 3)
+        self.capacity_entry = self.create_labeled_entry(parent, "Cache Capacity (KB): *", 1, placeholder="Enter cache capacity(upto 64 KB)")
+        self.block_size_entry = self.create_labeled_entry(parent, "Block Size (Bytes): *", 2, placeholder="Enter block size(upto 128 Bytes)")
+        self.associativity_entry = self.create_labeled_entry(parent, "Associativity: *", 3, placeholder="Enter associativity(upto 8)")
 
     def create_trace_file_selector(self, parent):
         browse_button = ctk.CTkButton(parent, text="Select Memory Trace File", command=self.select_trace_file, fg_color=self.styles["button_bg"], hover_color=self.styles["highlight"], font=ctk.CTkFont(size=14, weight="bold"), width=200)
