@@ -182,12 +182,12 @@ class CacheSimulator:
 
     @staticmethod
     def is_valid_capacity(capacity):
-        return capacity in [4, 8, 16, 32, 64]
+        return capacity in [2,4, 8, 16, 32, 64]
 
     @staticmethod
     def is_valid_block_size(block_size):
-        return block_size in [4, 8, 16, 32, 64, 128, 256, 512]
+        return block_size in [2,4, 8, 16, 32, 64, 128]
 
     @staticmethod
     def is_valid_associativity(associativity):
-        return associativity in [1, 2, 4, 8, 16]
+        return associativity in [ 2, 4, 8]
