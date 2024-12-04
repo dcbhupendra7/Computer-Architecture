@@ -1,0 +1,22 @@
+STATISTICS:
+Misses:
+Total: 13 DataReads: 10 DataWrites: 15
+Miss rate:
+Total: 0.520000 DataReads: 1.300000 DataWrites: 0.866667
+Number of Dirty Blocks Evicted From the Cache: 7
+
+CACHE CONTENTS
+Set   V    Tag    Dirty    Word0      Word1      Word2      Word3      Word4      Word5      Word6      Word7
+00     1   00000002    1    0000003C
+00     1   00000003    0    00001800
+01     1   00000002    1    0000004D
+02     1   00000002    0    00001080
+03     1   00000002    1    0000005E
+04     1   00000002    0    00001100
+04     1   00000003    1    0000009C
+08     1   00000002    0    00001200
+0C     1   00000002    1    0000006F
+10     1   00000002    0    00001400
+14     1   00000002    1    0000007A
+18     1   00000002    0    00001600
+1C     1   00000002    1    0000008B
